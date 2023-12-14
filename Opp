@@ -1,0 +1,1334 @@
+complex number
+
+#include <iostream>
+using namespace std ;
+
+class complex
+{
+    public:
+    float x;
+    float y;
+
+    public:
+    complex(){
+        x=0;
+        y=0;
+    }
+
+    complex(int real,int imag){
+        x=real;
+        y=imag;
+    }
+    public:
+    void output(){
+    cout<<x<<'+'<<y<<'i'<<endl;
+    }
+
+    complex operator+(complex);
+    complex operator*(complex);
+    friend istream& operator>>(istream&, complex&);
+    friend ostream& operator<<(ostream& , complex&);
+};
+complex complex::operator+(complex c){
+    complex sum;    
+    sum.x=x+c.x;
+    sum.y=y+c.y;
+    return sum ;
+}
+complex complex::operator*(complex c){
+    complex mult;
+    mult.x=((x*c.x)-(y*c.y));   
+    mult.y=((y*c.x)+(x*c.y));
+    return mult ;
+    void output();
+}
+istream& operator>>(istream&din,complex&b)
+{
+    complex d;
+    din>>b.x;
+    din>>b.y;
+    return din;
+}
+ostream& operator<<(ostream&dout,complex&b)
+{
+    complex d;
+    dout<<b.x<<"+";
+    dout<<b.y<<"i"<<endl;
+    return (dout);
+}
+int main(){
+    complex c1,c2,c3,c4,c5;
+    float a,b,c,d;
+    cout<<"Enter the real and imag number first complex number"<<endl;
+    cin>>a;
+    cin>>b;
+    c1=complex(a,b);
+    cout<<"First complex Number:"<<c1;
+    cout<<"Enter the real & imag number second complex number "<<endl;
+    cin>>c;
+    cin>>d;
+    c2=complex(c,d);
+    cout<<"Second complex Number:"<<c2;
+    cout<<"the sum of complex number is : "<<endl;
+    c3=c1+c2;
+    cout<<c3;
+    cout<<"the mult of complex number is : "<<endl; 
+    c4=c1*c2;
+    cout<<c4;
+    return 0;
+}
+
+Student Data
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class StudData;
+class Student{
+    string name;
+    int roll_no;
+    string cls;
+    char* division;
+    string dob;
+    char* bloodgroup;
+    static int count;
+    public:
+    Student() // Default Constructor
+    {
+        name="";
+        roll_no=0;
+        cls="";
+        division=new char;
+        dob="dd/mm/yyyy";
+        bloodgroup=new char[4];
+    }
+    ~Student()
+    {
+        delete division;
+        delete[] bloodgroup;
+    }
+    static int getCount()
+    {
+    return count;
+    }
+    void getData(StudData*);
+    void dispData(StudData*);
+};
+class StudData{
+    string caddress;
+    long int* telno;
+    long int* dlno;
+    friend class Student;
+    public:
+    StudData()
+    {
+        caddress="";
+        telno=new long;
+        dlno=new long;
+    }
+    ~StudData()
+    {
+        delete telno;
+        delete dlno;
+    }
+    void getStudData()
+    {
+        cout<<"Enter Contact Address : ";
+        cin.get();
+        getline(cin,caddress);
+        cout<<"Enter Telephone Number : ";
+        cin>>*telno;
+        cout<<"Enter Driving License Number : ";
+        cin>>*dlno;
+    }
+    void dispStudData()
+    {
+        cout<<"Contact Address : "<<caddress<<endl;
+        cout<<"Telephone Number : "<<*telno<<endl;
+        cout<<"Driving License Number : "<<*dlno<<endl;
+    }
+};
+inline void Student::getData(StudData* st)
+{
+    cout<<"Enter Student Name : ";
+    cin>>name;
+    cout<<"Enter Roll Number : ";
+    cin>>roll_no;
+    cout<<"Enter Class : ";
+    cin>>cls;
+    cout<<"Enter Division : ";
+    cin>>division;
+    cout<<"Enter Date of Birth : ";
+    cin>>dob;
+    cout<<"Enter Blood Group : ";
+    cin>>bloodgroup;
+    st->getStudData();
+    count++;
+}
+inline void Student::dispData(StudData* st1)
+{
+    cout<<"Student Name : "<<name<<endl;
+    cout<<"Roll Number : "<<roll_no<<endl;
+    cout<<"Class : "<<cls<<endl;
+    cout<<"Division : "<<division<<endl;
+    cout<<"Date of Birth : "<<dob<<endl;
+    cout<<"Blood Group : "<<bloodgroup<<endl;
+    st1->dispStudData();
+}
+int Student::count;
+
+int main()
+{
+    Student* stud1[100];
+    StudData* stud2[100];
+    int n=0;
+    char ch;
+    do
+    {
+        stud1[n]=new Student;
+        stud2[n]=new StudData;
+
+        cout<<"Default Details of Student"<<endl;
+        stud1[n]->dispData(stud2[n]);
+        cout<<"enter details of Student "<<n+1<<endl;
+        stud1[n]->getData(stud2[n]);
+        n++;
+        cout<<"\nDo you want to add another student (y/n) : ";
+        cin>>ch;
+        cin.get();
+    } while (ch=='y' || ch=='Y');
+    for(int i=0;i<n;i++)
+    {
+        cout<<"---------------------------------------------------------------"<<endl;
+        stud1[i]->dispData(stud2[i]);
+    }
+    cout<<"---------------------------------------------------------------"<<endl;
+    cout<<"Total Students : "<<Student::getCount();
+    cout<<endl<<"---------------------------------------------------------------"<<endl;
+    for(int i=0;i<n;i++)
+    {
+        delete stud1[i];
+        delete stud2[i];
+    }
+    return 0;
+}
+
+
+INHERITANCE
+
+#include <iostream>
+#include<stdlib.h>
+using namespace std;
+
+class Publication
+{
+     private:string title;
+    float price;
+
+    public:
+    void getData();
+    void Display();
+};
+
+void Publication::getData()
+{ 
+    cout<<"Enter title"<<endl;
+    cin>>title;
+    cout<<"Enter price:"<<endl;
+    cin>>price;
+} 
+void Publication::Display()
+{ 
+    cout<<"Title of Book is:"<<title<<endl;
+    cout<<"Price:"<<price<<endl;
+} 
+class Book:public Publication
+{ 
+    private:
+    int pagecount;
+    public:
+    void insert();
+    void display();
+};
+
+void Book::insert()
+{ 
+    getData();
+    cout<<"Enter the total page numbers"<<endl;
+    try{
+        cin>>pagecount;
+        if(pagecount<=0)
+        throw pagecount;
+    } catch(int)
+    { cout<<"Pagecount can't be zero";
+    }
+}
+
+void Book::display()
+{
+     Display();
+    cout<<"Total page numbers is:"<<pagecount<<endl;
+}
+
+class Tape:public Publication
+{ 
+    private:
+    float minutes;
+    public:
+    void Time();
+    void Show();
+};
+
+void Tape::Time()
+{ 
+    getData();
+    cout<<"Enter the time of playing"<<endl;
+    cin>>minutes;
+} 
+
+void Tape::Show()
+{
+     Display();
+    cout<<"Time of playing is:"<<minutes<<endl;
+}
+
+int main()
+{ 
+    Book b;
+    Tape t;
+    int ch;
+    do
+    { 
+        cout<<"1.Book 2.CD 3.exit"<<endl;
+        cin>>ch;
+        switch(ch)
+        { 
+            case 1:
+                    b.insert();
+                    b.display();
+                break;
+            case 2:
+                    t.Time();
+                    t.Show();
+                break;
+            case 3:exit(0);
+        } 
+    }
+    while(ch!=3);
+    return 0;
+}
+
+FILE HANDLING
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() 
+{
+    fstream my_file;
+    my_file.open("my_file.txt", ios::out);
+    if (!my_file) 
+    {
+        cout << "File not created!";
+    } else 
+    {
+        cout << "File created successfully!";
+        my_file << "Parthkourwar";
+        my_file.close();
+    }
+    
+    my_file.open("my_file.txt", ios::in);
+    if (!my_file) 
+    {
+        cout << "No such file";
+    } else 
+    {
+        char ch;
+        while (1) {
+        my_file >> ch;
+        if (my_file.eof())
+            break;
+        cout << ch;
+        }
+    }
+    my_file.close();
+    return 0;
+}
+
+TEMPLATE
+
+#include<iostream>
+using namespace std;
+
+template<class T>
+void create(T *p,int size)
+{
+    cout<<"Enter the elements of the array"<<endl;
+    for(int i=0;i<size;i++)
+    {
+        cin>>p[i];
+    }
+}
+template<typename T>
+void show(T*p,int size)
+{
+    cout<<"The elements of the array are:"<<endl;
+    for(int i=0;i<size;i++)
+    {
+        cout<<" "<<p[i];
+    }
+}
+
+template<typename T>
+void sort(T*arr,int size)
+{ 
+    int j,min;
+    T temp;
+    for(int i=0;i<size-1;i++)
+    {
+        min=i;
+        for(j=i+1;j<size;j++)
+        {
+            if(arr[j]<arr[min])
+            {
+                min=j;
+                }
+            }
+        temp=arr[i];
+        arr[i]=arr[min];
+        arr[min]=temp;
+    }
+} 
+
+int main()
+{
+    int size,size1;
+    cout<<"Enter the size of the array"<<endl;
+    cin>>size;
+    int arr[size];
+    cout<<"With integer array"<<endl;
+    create(arr,size);
+    show(arr,size);
+    cout<<endl;
+    cout<<"Selection sort:"<<endl;
+    sort(arr,size);
+    show(arr,size);
+    cout<<endl;
+    cout<<"With float array"<<endl;
+    cout<<"Enter the size of the float array"<<endl;
+    cin>>size1;
+    float arr1[size1];
+    create<float>(arr1,size1);
+    show<float>(arr1,size1);    
+    cout<<endl;
+    cout<<"Selection sort"<<endl;
+    sort<float>(arr1,size1);
+    show<float>(arr1,size1);
+    return 0;
+}
+
+VECTOR
+
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<vector>
+using namespace std;
+
+class student
+{
+    public:
+    int roll;
+    string name;
+    char dob[15];
+
+    bool operator==(const student &student1)
+    {
+        if(roll==student1.roll)
+        return 1;
+        return 0;
+    }
+    bool operator<(const student &student1)
+    {
+        if(roll<student1.roll)
+             return 1;
+        return 0;
+    }
+};
+
+vector<student> s1;
+void print(student &k);
+void display();
+void insert();
+void search();
+void sort();
+void del();
+
+bool compare (const student &k, const student &i2)
+{
+    return (k.roll<i2.roll);
+}
+
+int main()
+{
+    int op;
+    do
+    {
+        cout<<"\n\n\t\t-----------<< MENU >>----------";
+        cout<<"\n\t\t1.INSERT";
+        cout<<"\n\t\t2.DISPLAY";
+        cout<<"\n\t\t3.SEARCH";
+        cout<<"\n\t\t4.SORT";
+        cout<<"\n\t\t5.DELETE";
+        cout<<"\n\t\t6.QUIT";
+        cout<<"\n\t\t-------------------------------";
+        cout<<"\n\t\tEnter Your Choice:";
+        cin>>op;
+        switch(op)
+        {
+            case 1:
+                    insert();
+                    break;
+            case 2:
+                    display();
+                    break;
+            case 3:
+                    search();
+                    break;
+            case 4:
+                    sort();
+                    cout<<"Sprted on Roll Number:";
+                    display();
+                    break;
+            case 5:
+                    del();
+                    break;
+        }
+
+    } while (op!=6);
+    return 0;
+}
+void insert(){
+    student k;
+    cout<<"Enter the name of STudent:"<<endl;
+    cin>>k.name;
+    cout<<"Enter Roll Number of Student:"<<endl;
+    cin>>k.roll;
+    cout<<"Enter Date of Birth:"<<endl;
+    cin>>k.dob;
+    s1.push_back(k);
+}
+void display(){
+    for_each(s1.begin(), s1.end(), print);
+}
+void print(student &i1){
+    cout<<endl;
+    cout<<"Student Name:"<<i1.name<<endl;
+    cout<<"Student Roll Number:"<<i1.roll<<endl;
+    cout<<"Student DOB:"<<i1.dob<<endl;
+}
+void search(){
+    vector<student>::iterator p;
+    student k;
+    cout<<"\nEnter roll number to be searched:";
+    cin>>k.roll;
+    p=find(s1.begin(),s1.end(),k);
+    if(p!=s1.end())
+    cout<<"FOUND";
+    else
+    cout<<"Not Found.";
+}
+void del(){
+    student k;
+    cout<<"\nEnter STudent roll to delete:";
+    cin>>k.roll;
+    vector<student>::iterator p;
+    p=find(s1.begin(),s1.end(),k);
+    if(p!=s1.end())
+    s1.erase(p);
+    else
+    cout<<"NOT FOUND";
+}
+void sort(){
+    sort(s1.begin(),s1.end(),compare);
+}
+
+
+POPULATION MAP
+#include<iostream>
+#include<string>
+#include<map>
+using namespace std;
+
+int main()
+{
+    typedef map<string,int> mapType;
+    mapType populationmap;
+    populationmap.insert(pair<string,int>("Maharashtra",74845875));
+    populationmap.insert(pair<string,int>("Jharkhand",14521454));
+    populationmap.insert(pair<string,int>("Punjab",21547896));
+    populationmap.insert(pair<string,int>("Kerala",4587458));
+    populationmap.insert(pair<string,int>("West Bengal",4785478));
+    mapType::iterator iter;
+    cout<<"================Population Of India================";
+    string statename;
+    cout<<"\nEnter Name of State:";
+    cin>>statename;
+    iter=populationmap.find(statename);
+    if(iter!=populationmap.end())
+    cout<<statename<<"'s population is"
+    <<iter->second;
+    else
+    cout<<"Key is not Of Populationmap.";
+    populationmap.clear();
+
+}
+
+
+PATTERN
+
+#include<iostream>
+#include<math.h>
+#include<graphics.h>
+using namespace std;
+
+class pixel
+{
+	int X,Y,c;
+	public:
+	void drawpixel(int x, int y, int color)
+	{
+		X=x;
+		Y=y;
+		c=color;
+		putpixel(X,Y,c);
+	}
+};
+
+class linealgo : public pixel
+{
+	int x1,y1,x2,y2;
+	public:
+	linealgo(int X1, int Y1, int X2, int Y2)
+	{
+		x1=X1;
+		y1=Y1;
+		x2=X2;
+		y2=Y2;
+	}
+	void drawline(int );
+	int sign(float);
+};
+int linealgo :: sign(float arg)
+{
+	if(arg<0)
+	 return -1;
+	else if(arg==0)
+	 return 0;
+	else
+	 return 1;
+}
+
+void linealgo :: drawline(int color)
+{
+	int s1,s2,x,y,exhg,i;
+	float dx,dy,temp,p;
+
+	dx=abs(x2-x1);
+	dy=abs(y2-y1);
+
+	x=x1;
+	y=y1;
+
+	s1=sign(x2-x1);
+	s2=sign(y2-y1);
+	
+	if(dy>dx)
+	{
+		temp=dx;
+		dx=dy;
+		dy=temp;
+		exhg=1;
+	}
+	else{
+		exhg=0;
+	}
+
+	p=2*dy-dx;
+	i=1;
+	while(i<=dx)
+	{
+		drawpixel(x,y,color);
+		while(p>=0)
+		{
+			if(exhg==1)
+			 x=x+s1;
+			else
+			 y=y+s2;
+			p=p-2*dx;
+		}
+		if(exhg==1)
+		 y=y+s2;
+		else
+		 x=x+s1;
+		p=p+2*dy;
+		i++;		
+	}
+}
+
+class circlealgo : public pixel
+{
+	int x,y,r;
+	public:
+	circlealgo(int X, int Y, int R){
+		x=X;
+		y=Y;
+		r=R;
+	}
+	void drawcircle();
+};
+void circlealgo :: drawcircle()
+{
+	int d,x1,y1;
+	x1=0;
+	y1=r;
+	drawpixel(x,y,2);
+	 d=3-(2*r);
+	while(x1<=y1)
+	{
+		if(d<=0)
+		{
+			d=d+(4*x1)+6;
+			x1=x1+1;	
+		}
+		else
+		{
+			d=d+4*(x1-y1)+10;
+			x1=x1+1;
+			y1=y1-1;
+		}
+	drawpixel(x+x1,y-y1,2);
+	drawpixel(x-x1,y-y1,2);
+	drawpixel(x+x1,y+y1,2);
+	drawpixel(x-x1,y+y1,2);
+	drawpixel(x+y1,y-x1,2);
+	drawpixel(x-y1,y-x1,2);
+	drawpixel(x+y1,y+x1,2);
+	drawpixel(x-y1,y+x1,2);
+	}
+}
+
+int main()
+{
+	int l,xc,yc,a,b,c,u,v,r1,r2;
+	cout<<"\nEnter length of equilateral triangle:"<<endl;
+	cin>>l;
+	int gd,gm;
+	gd=DETECT;
+	initgraph(&gd,&gm,NULL);
+	xc=640;
+	yc=480;
+	xc=xc/2;
+	yc=yc/2;
+
+	r1=(float)(sqrt(3)*l)/6;
+
+	a=xc+(float)(l/2);
+	b=yc+r1;
+	c=xc+(float)(l/2);
+
+	r2=(float)(sqrt((a-xc)*(a-xc)+(b-yc)*(b-yc)));
+
+
+	u=xc;
+	v=(float)(yc-r2);
+
+	linealgo l1(a,b,c,b);
+	l1.drawline(3);
+	delay(200);
+	
+	linealgo l2(a,b,u,v);
+	l2.drawline(3);
+	delay(200);
+
+	linealgo l3(c,b,u,v);
+	l3.drawline(3);
+	delay(200);
+
+	circlealgo c1(xc,yc,r1);
+	c1.drawcircle();
+	delay(200);
+
+	circlealgo c2(xc,yc,r2);
+	c2.drawcircle();
+	delay(200);
+
+getch();
+closegraph();
+return 0;
+}
+
+SCANLINE
+ #include<iostream>
+ #include<graphics.h>
+ #include<math.h>
+ using namespace std;
+
+ class scan
+ {
+    public:
+    int x[20],y[20],k;
+    float slope[20],x_int[20];
+
+    void polygon(int n);
+ };
+
+ void scan :: polygon(int n)
+ {
+    int i;
+    float dx,dy;
+
+    x[n]=x[0];
+    y[n]=y[0];
+    for(i=0;i<n;i++)
+    {
+        line(x[i],y[i],x[i+1],y[i+1]);
+    }
+    for(i=0;i<n;i++)
+    {
+        dx=x[i+1]-x[i];
+        dy=y[i+1]-y[i];
+        if(dy==0)
+         slope[i]=1;
+        else if(dx==0)
+         slope[i]=0;
+        else
+         slope[i]=dx/dy;
+    }
+    for(int p=0;p<480;p++)
+    {
+        k=0;
+        for(i=0;i<n;i++)
+        {
+            if(((y[i]<=p)&&(y[i+1]>p)||(y[i]>p)&&(y[i+1]<=p)))
+            { 
+                x_int[k]=x[i]+slope[i]*(p-y[i]);
+                k++;
+            }
+        for(int j=0;j<k-1;j++)
+        {
+            for(i=0;i<k;i++)
+            {
+                if(x_int[i]>x_int[i+1])
+                {
+                    int temp=x_int[i];
+                    x_int[i]=x_int[i+1];
+                    x_int[i+1]=temp;
+                }
+            }
+        }
+        for(int i=0;i<k;i++)
+        {
+            setcolor(RED);
+            line(x_int[i],p,x_int[i+1],p);
+            delay(10);
+        }
+    }
+    }
+ }
+
+int main()
+{
+    int n,i;
+        scan p;
+        cout<<"Enter Edges:\t";
+        cin>>n;
+        cout<<"Enter Coordinates:\t";
+        for(i=0;i<n;i++)
+        {
+            cin>>p.x[i]>>p.y[i];
+        }
+        int gd,gm;
+        gd=DETECT;
+        initgraph(&gd,&gm,NULL);
+        p.polygon(n);
+        getch();
+        closegraph();
+        return 0;
+}  
+
+ANIMATION
+#include <graphics.h>
+#include <stdlib.h>
+using namespace std;
+class WalkingMan {
+ int rhx, rhy;
+public:
+ void draw(int, int);
+ void draw(int);
+};
+void WalkingMan::draw(int i) {
+ line(20, 380, 580, 380); // Platform
+ if (i % 2 == 0) {
+ // Draw the walking man for even steps
+ line(25 + i, 380, 35 + i, 340); // Left leg
+ line(45 + i, 380, 35 + i, 340); // Right leg
+ line(35 + i, 310, 25 + i, 330); // Left hand
+ delay(20);
+ } else {
+ // Draw the walking man for odd steps
+ line(35 + i, 380, 35 + i, 340);
+ line(35 + i, 310, 40 + i, 330);
+ delay(20);
+ }
+ // Draw the rest of the figure
+ line(35 + i, 340, 35 + i, 310); // Body
+ circle(35 + i, 300, 10); // Head
+ line(35 + i, 310, 50 + i, 330); // Hand
+ line(50 + i, 330, 50 + i, 280); // Umbrella stick
+ line(15 + i, 280, 85 + i, 280); // Umbrella right
+ arc(50 + i, 280, 360, 180, 35); // Umbrella body
+ arc(55 + i, 330, 180, 0, 5); // Umbrella handle
+}
+void WalkingMan::draw(int x, int y) {
+ int j;
+ rhx = x;
+ rhy = y;
+ for (j = 0; j < 100; j++) {
+ outtextxy(rand() % rhx, rand() % (rhy - 50), const_cast<char*>("/"));
+ setcolor(WHITE);
+ }
+}
+int main() {
+ int gd = DETECT, gm;
+ int rhx, rhy, j, i;
+ WalkingMan obj;
+ initgraph(&gd, &gm, const_cast<char*>(""));
+ for (i = 0; i < 500; i += 5) {
+ obj.draw(i);
+ rhx = getmaxx();
+ rhy = getmaxy();
+ obj.draw(rhx, rhy);
+ delay(150);
+ cleardevice();
+ }
+ getch();
+}
+
+TRANSFORMATION
+
+#include<iostream>
+#include<stdio.h>
+#include<math.h>
+#include<graphics.h>
+using namespace std;
+
+class polygon
+{
+    float p[10][10],m,n;
+    public:
+    void getpoly();
+    void drawpoly();
+    void displaypoly();
+    polygon mat_mul(polygon);
+    polygon operator+(polygon);
+    polygon operator*(polygon);
+    polygon operator/(polygon);
+    polygon operator-(polygon);
+};
+
+void polygon :: getpoly()
+{
+    int i,j;
+    cout<<"Enter number of Vertices:";
+    cin>>m;
+    n=3;
+    cout<<"Enter polygon coordinates:";
+    for(i=0;i<m;i++)
+    {
+        cin>>p[i][0]>>p[i][1];
+        p[i][2]==1;
+    }
+}
+void polygon :: displaypoly()
+{
+    int i,j;
+    cout<<"The polygon is as follows:";
+    for(i=0;i<m;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            cout<<p[i][j]<<" ";
+
+            cout<<endl;
+        }
+    }
+}
+
+void polygon :: drawpoly()
+{
+    int i;
+    line(320,2,320,438);
+    line(2,240,638,240);
+
+    for(i=0;i<m-1;i++)
+     line(p[i][0]+320,240-p[i][1],p[i+1][0]+320,240-p[i+1][1]);
+     line(p[0][0]+320,240-p[0][1],320+p[i][0],240-p[i][1]);
+}
+
+polygon polygon :: mat_mul(polygon p2)
+{
+    int i,j,k;
+    polygon p3;
+
+    p3.m=this->m;
+    p3.n;
+    cout<<endl;
+    for(i=0;i<p3.m;i++)
+     for(j=0;j<3;j++)
+     {
+        p3.p[i][j]=0;
+        for(k=0;k<3;k++)
+         p3.p[i][j]+=this->p[i][k]*p2.p[k][j];
+     }
+     return  p3;
+}
+
+polygon polygon :: operator+(polygon p2)
+{
+    polygon p3;
+    int tx,ty;
+    p3.m=this->m;
+    p3.n=3;
+
+    cout<<"Enter Translation Factors:";
+    cin>>tx>>ty;
+    p2.p[0][0]=1; p2.p[0][1]=0; p2.p[0][2]=0;
+    p2.p[1][0]=0; p2.p[1][1]=1; p2.p[1][2]=0;
+    p2.p[2][0]=tx; p2.p[2][1]=ty; p2.p[2][2]=0;
+
+    p3=this->mat_mul(p2);
+    return p3;
+}
+
+polygon polygon :: operator*(polygon p2)
+{
+    polygon p3;
+    int sx,sy;
+    p3.m=this->m;
+    p3.n=3;
+
+    cout<<"Enter Scaling Factors:";
+    cin>>sx>>sy;
+    p2.p[0][0]=sx; p2.p[0][1]=0; p2.p[0][2]=0;
+    p2.p[1][0]=0; p2.p[1][1]=sy; p2.p[1][2]=0;
+    p2.p[2][0]=0; p2.p[2][1]=0; p2.p[2][2]=1;
+
+    p3=this->mat_mul(p2);
+    return p3;
+}
+
+polygon polygon :: operator/(polygon p2)
+{
+    polygon p3;
+    float ang,radian;
+
+    p3.m=this->m;
+    p3.n=3;
+
+    cout<<"Angle:";
+    cin>>ang;
+    radian=ang*(3.12/180);
+
+    p2.p[0][0]=cos(radian); p2.p[0][1]=sin(radian); p2.p[0][2]=0;
+    p2.p[1][0]=sin(radian); p2.p[1][1]=cos(radian); p2.p[1][2]=0;
+    p2.p[2][0]=0; p2.p[2][1]=0; p2.p[2][2]=1;
+
+    p3=this->mat_mul(p2);
+    return p3;
+}
+
+polygon polygon :: operator-(polygon p2)
+{
+    polygon p3;
+    float ang,radian;
+
+    p3.m=this->m;
+    p3.n=3;
+
+    cout<<"Angle:";
+    cin>>ang;
+    radian=ang*(3.12/180);
+
+    p2.p[0][0]=cos(radian); p2.p[0][1]=sin(radian); p2.p[0][2]=0;
+    p2.p[1][0]=-sin(radian); p2.p[1][1]=cos(radian); p2.p[1][2]=0;
+    p2.p[2][0]=0; p2.p[2][1]=0; p2.p[2][2]=1;
+
+    p3=this->mat_mul(p2);
+    return p3;
+}
+
+int main()
+{
+    polygon p1,p2,p3;
+    int gd=DETECT,gm,sw;
+
+    p1.getpoly();
+    p1.displaypoly();
+    initgraph(&gd,&gm,NULL);
+    p1.drawpoly();
+
+    do
+    {
+        cout<<"\t\t*****MENU*****";
+        cout<<"\n1.TRANSLATION";
+        cout<<"\n2.SCALING";
+        cout<<"\n3.CLOCKWISE ROTATION";
+        cout<<"\n4.ANTI_CLOCKWISE ROTATION";
+        cout<<"\nPlease Enter Your Choice:";
+        cin>>sw;
+        switch(sw)
+        {
+            case 1:
+                    p3=p1+p2;
+                    p3.displaypoly();
+                    p3.drawpoly();
+                break;
+            case 2:
+                    p3=p1*p2;
+                    p3.displaypoly();
+                    p3.drawpoly();
+                break;
+            case 3:
+                    p3=p1/p2;
+                    p3.displaypoly();
+                    p3.drawpoly();
+                break;
+            case 4:
+                    p3=p1-p2;
+                    p3.displaypoly();
+                    p3.drawpoly();
+                break;
+        }
+
+    } while (sw!=5);
+    getch();
+    return 0;
+    
+}
+
+
+COHEN
+
+#include<iostream>
+#include<math.h>
+#include<graphics.h>
+
+using namespace std;
+static int LEFT=1,RIGHT=2,BOTTOM=4,TOP=8,xl,yl,xh,yh;
+
+int getcode(int x,int y){
+    int code=0;
+    if(y>yh)code|=TOP;
+    if(y<yl)code|=BOTTOM;
+    if(x<xl)code|=LEFT;
+    if(x>xh)code|=RIGHT;
+    return code;
+}
+
+int main()
+{
+    int gdriver=DETECT,gmode;
+    initgraph(&gdriver,&gmode,NULL);
+    setcolor(BLUE);
+    cout<<"Enter Bottom Left and Top Right Co-ordinates of window:";
+    cin>>xl>>yl>>xh>>yh;
+    rectangle(xl,yl,xh,yh);
+    int x1,y1,x2,y2;
+    cout<<"Enter the ENDPOINTS of the Line:";
+    cin>>x1>>y1>>x2>>y2;
+    line(x1,y1,x2,y2);
+    getch();
+
+    int outcode1=getcode(x1,y1), outcode2=getcode(x2,y2);
+    int accept=0;
+    while(1){
+        float m=(float)(y2-y1)/(x2-x1);
+        if(outcode1==0&&outcode2==0)
+        {
+            accept=1;
+            break;
+        }
+        else if((outcode1 &outcode2)!=0)
+        {
+            break;
+        }
+        else{
+            int x,y;
+            int temp;
+            if(outcode1==0)
+             temp=outcode2;
+            else
+             temp=outcode1;
+            if(temp&TOP){
+                x=xl+(yh-y1)/m;
+                y=yh;
+            }
+            else if(temp & BOTTOM){
+                x=x1+(yl-y1)/m;
+                y=yl;
+            }
+            else if(temp & LEFT){
+                x=xl;
+                y=yl+m*(xl-x1);
+            }
+            else if(temp & RIGHT){
+                x=xh;
+                y=yl+m*(xh-x1);
+            }
+            if(temp==outcode1){
+                x1=x;
+                y1=y;
+                outcode1=getcode(x1,y1);
+            }
+            else
+            {
+                x2=x;
+                y2=y;
+                outcode2=getcode(x2,y2);
+            }
+        }
+    }
+    setcolor(15);
+    cout<<"After Clipping:";
+    if(accept)
+     line(x1,y1,x2,y2);
+    getch();
+    closegraph();
+    return 0;
+}
+
+
+KOCH
+
+#include <iostream>
+#include <graphics.h>
+#include <math.h>
+using namespace std;
+void seedfill(int x,int y,int col)
+{
+    int c=getpixel(x,y);
+    if(c!=col)
+    {
+        putpixel(x,y,col);
+        seedfill(x+1,y,col);
+        seedfill(x-1,y,col);
+        seedfill(x,y+1,col);
+        seedfill(x,y-1,col);
+    }
+}
+void koch(int x1,int y1,int x2,int y2,int it)
+{
+    float angle=(60 * M_PI)/180;
+    int x3=((2*x1)+x2)/3;   
+    int y3=((2*y1)+y2)/3;
+    int x4=((2*x2)+x1)/3;
+    int y4=((2*y2)+y1)/3;
+    int x=x3 + ((x4-x3)*cos(angle)) + ((y4-y3)*sin(angle));
+    int y=y3 - ((x4-x3)*sin(angle)) + ((y4-y3)*cos(angle));
+    if(it>0)
+    {
+        koch(x1,y1,x3,y3,it-1);
+        koch(x3,y3,x,y,it-1);
+        koch(x,y,x4,y4,it-1);
+        koch(x4,y4,x2,y2,it-1);
+    } else
+    {
+        line(x1,y1,x3,y3);
+        line(x3,y3,x,y);
+        line(x,y,x4,y4);
+        line(x4,y4,x2,y2);
+    }
+}
+
+int main()
+{
+    int gd,gm;
+    gd=DETECT;
+    initgraph(&gd,&gm,NULL);
+    koch(200,266,100,100,3);
+    koch(100,100,300,100,3);
+    koch(300,100,200,266,3);
+
+    getch();
+    closegraph();
+    return 0;
+}
+
+SNOWFLAKE
+
+#include<iostream>
+#include<graphics.h>
+#include<math.h>
+using namespace std;
+class fractal
+{
+    int x1,y1,x2,y2,x3,y3,n;
+    public:
+    void initgr();
+    void close();
+    void koch (int it, int x1, int y1, int x5, int y5);
+    void draw();
+};
+void fractal:: initgr()
+{
+    int gm,gd=DETECT;
+    initgraph(&gd,&gm,NULL);
+}
+void fractal:: close()
+{
+    getch();
+    closegraph();
+}
+void fractal:: koch (int it, int x1, int y1, int x5, int y5)
+{
+    fractal f1;
+    int deltaX, deltaY, x2, y2, x3, y3, x4, y4;
+    if (it == 0){
+        line(x1, y1, x5, y5);
+    }
+    else{
+        deltaX = x5 - x1;   
+        deltaY = y5 - y1;
+        x2 = x1 + deltaX / 3;
+        y2 = y1 + deltaY / 3;
+        x3 = (int) (0.5 * (x1+x5) + sqrt(3) * (y1-y5)/6);
+        y3 = (int) (0.5 * (y1+y5) + sqrt(3) * (x5-x1)/6);
+        x4 = x1 + 2 * deltaX /3;
+        y4 = y1 + 2 * deltaY /3;
+        koch (it-1, x1, y1, x2, y2);
+        koch (it-1, x2, y2, x3, y3);
+        koch (it-1, x3, y3, x4, y4);
+        koch (it-1, x4, y4, x5, y5);
+    }
+}
+void fractal::draw()
+{
+
+    cout<<"\n\tEnter The No Of Iteration:=>";
+    cin>>n;
+    
+    koch(n,280,280,150,20);
+    koch(n,20,280,280,280);
+    koch(n,150,20,20,280);
+}
+int main()
+{
+    fractal f;
+    f.initgr();
+    f.draw();
+    getch();
+    f.close();
+    return 0;
+}
